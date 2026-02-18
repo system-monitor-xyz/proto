@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package logger;
+
+service LoggerService {
+  rpc Log (LogRequest) returns (LogResponse);
+  rpc LogBatch (LogBatchRequest) returns (LogResponse);
+}
+
+message LogRequest {
+  string level = 1; // info, error, warn, debug
+  string message = 2;
+  string service = 3; // service name
+  string context = 4; // controller/class name
+  string trace_id = 5; // correlation ID
+  string timestamp = 6;
+  map<string, string> metadata = 7; // additional fields
+}
+
+message LogBatchRequest {
+  repeated LogRequest logs = 1;
+}
+
+message LogResponse {
+  bool success = 1;
+  string message = 2;
+}
